@@ -15,6 +15,8 @@ public abstract class Room {
 	private double defaultRate;
 	
 	private RoomState roomState;
+	
+	private boolean isReserved;
 
 	public Room(RoomCategory roomCategory, 
 			boolean hasWiFi, 
@@ -26,7 +28,7 @@ public abstract class Room {
 		this.roomState = roomState;
 	}
 
-	protected RoomCategory getRoomCategory() {
+	public RoomCategory getRoomCategory() {
 		return roomCategory;
 	}
 
@@ -34,7 +36,7 @@ public abstract class Room {
 		this.roomCategory = roomCategory;
 	}
 
-	protected boolean isHasWiFi() {
+	public boolean isHasWiFi() {
 		return hasWiFi;
 	}
 
@@ -42,7 +44,7 @@ public abstract class Room {
 		this.hasWiFi = hasWiFi;
 	}
 
-	protected RoomOccupancy getRoomOccupancy() {
+	public RoomOccupancy getRoomOccupancy() {
 		return roomOccupancy;
 	}
 
@@ -50,7 +52,7 @@ public abstract class Room {
 		this.roomOccupancy = roomOccupancy;
 	}
 
-	protected double getDefaultRate() {
+	public double getDefaultRate() {
 		return defaultRate;
 	}
 
@@ -58,12 +60,22 @@ public abstract class Room {
 		this.defaultRate = defaultRate;
 	}
 
-	protected RoomState getRoomState() {
+	public RoomState getRoomState() {
 		return roomState;
 	}
 
 	protected void setRoomState(RoomState roomState) {
 		this.roomState = roomState;
 	}
+	
+	public boolean isReserved() {
+		return isReserved;
+	}
+
+	protected void setReserved(boolean isReserved) {
+		this.isReserved = isReserved;
+	}
+
+	public abstract void changeOccupancyState(RoomOccupancy roomOccupancy);
 		
 }
