@@ -8,10 +8,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class MakeReservationViewModel implements Serializable{
 
 	@NotEmpty(message = "Enter start date")
-	private LocalDate startDate;
+	private String startDate;
 	
 	@NotEmpty(message = "Enter end date")
-	private LocalDate endDate;
+	private String endDate;
 
 	@NotEmpty(message = "Enter room category")
 	private String roomCategory;
@@ -25,28 +25,20 @@ public class MakeReservationViewModel implements Serializable{
 	public MakeReservationViewModel() {
 	}
 
-	public LocalDate getStartDate() {
+	public String getStartDate() {
 		return this.startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDate getEndDate() {
+	public String getEndDate() {
 		return this.endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
-	}
-
-	public double getChargedAmount() {
-		return this.chargedAmount;
-	}
-
-	public void setChargedAmount(double chargedAmount) {
-		this.chargedAmount = chargedAmount;
 	}
 
 	public String getRoomCategory() {

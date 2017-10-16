@@ -16,6 +16,7 @@ import com.hotelReservationWebApp.exceptions.CustomerNotFoundException;
 import com.hotelReservationWebApp.exceptions.NoFreeRoomsByCategoryException;
 import com.hotelReservationWebApp.services.ReservationService;
 import com.hotelReservationWebApp.viewModels.MakeReservationViewModel;
+import com.hotelReservationWebApp.viewModels.ReservationViewModel;
 import com.hotelReservationWebApp.viewModels.RoomsByCategoryViewModel;
 
 @Controller
@@ -29,24 +30,24 @@ public class ReservationController {
 		this.reservationService = reservationService;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/add")
+	@RequestMapping(method = RequestMethod.POST, value = "")
 	public ResponseEntity<MakeReservationViewModel> makeReservation(@RequestBody MakeReservationViewModel makeReservationViewModel) {
 		this.reservationService.makeReservation(makeReservationViewModel);
 		return new ResponseEntity<>(makeReservationViewModel, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")
-	public ResponseEntity<List<MakeReservationViewModel>> getAllReservations() {		
+	public ResponseEntity<List<ReservationViewModel>> getAllReservations() {		
 		return new ResponseEntity<>(this.reservationService.getAllReservations(), HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity catchCustomertNotFoundException(CustomerNotFoundException cnfe) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cnfe.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cnfe.getMessage());
     }
 	
 	@ExceptionHandler(NoFreeRoomsByCategoryException.class)
     public ResponseEntity catchNoFreeRoomsByCategoryException(NoFreeRoomsByCategoryException nfrce) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(nfrce.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(nfrce.getMessage());
     }
 }

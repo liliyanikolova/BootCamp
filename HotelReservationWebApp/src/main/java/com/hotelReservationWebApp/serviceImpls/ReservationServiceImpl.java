@@ -1,5 +1,6 @@
 package com.hotelReservationWebApp.serviceImpls;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hotelReservationWebApp.entities.Customer;
 import com.hotelReservationWebApp.entities.Reservation;
 import com.hotelReservationWebApp.entities.rooms.Room;
+import com.hotelReservationWebApp.enums.OccupancyType;
 import com.hotelReservationWebApp.enums.RoomOccupiedStatus;
 import com.hotelReservationWebApp.exceptions.CustomerNotFoundException;
 import com.hotelReservationWebApp.exceptions.NoFreeRoomsByCategoryException;
@@ -41,8 +43,8 @@ public class ReservationServiceImpl implements ReservationService{
 	@Override
 	public void makeReservation(MakeReservationViewModel makeReservationViewModel) {
 		Reservation reservation = new Reservation();
-		reservation.setStartDate(makeReservationViewModel.getStartDate());
-		reservation.setEndDate(makeReservationViewModel.getEndDate());
+		reservation.setStartDate(LocalDate.parse(makeReservationViewModel.getStartDate()));
+		reservation.setEndDate(LocalDate.parse(makeReservationViewModel.getEndDate()));
 		Customer customer = this.customerRepository.findByEgn(makeReservationViewModel.getCustomerEgn());
 		if(customer == null) {
 			throw new CustomerNotFoundException(Messages.NO_SUCH_CUSTOMER);
@@ -50,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		reservation.setCustomer(customer);
 		String category = makeReservationViewModel.getRoomCategory();
-		String occupancyType = makeReservationViewModel.getRoomOccupancyType();
+		OccupancyType occupancyType = OccupancyType.valueOf(makeReservationViewModel.getRoomOccupancyType());		
 		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyType(category, occupancyType);
 		if(freeRooms.size() == 0) {
 			throw new NoFreeRoomsByCategoryException(Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY);
@@ -59,6 +61,7 @@ public class ReservationServiceImpl implements ReservationService{
 		Room room = freeRooms.get(0);
 		room.setRoomOccupiedStatus(RoomOccupiedStatus.OCCUPIED);
 		reservation.setRoom(room);
+		reservation.setChargedAmount();
 				
 		this.reservationRepository.saveAndFlush(reservation);
 	}
@@ -76,6 +79,7 @@ public class ReservationServiceImpl implements ReservationService{
 			reservationViewModel.setCustomerEgn(reservation.getCustomer().getEgn());
 			reservationViewModel.setRoomCategory(reservation.getRoom().getCategory());
 			reservationViewModel.setRoomOccupancyType(reservation.getRoom().getOccupancyType().toString());
+			reservationViewModel.setRoomNumber(reservation.getRoom().getRoomNumber());
 			reservationViewModel.setChargedAmount(reservation.getChargedAmount());
 			
 			reservationViewModels.add(reservationViewModel);
@@ -85,5 +89,29 @@ public class ReservationServiceImpl implements ReservationService{
 	}
 	
 	
-	
+//	@Override
+//	public void makeReservation(MakeReservationViewModel makeReservationViewModel) {
+//		Reservation reservation = new Reservation();
+//		reservation.setStartDate(LocalDate.parse("2017-09-22"));
+//		reservation.setEndDate(LocalDate.parse("2017-09-25"));
+//		Customer customer = this.customerRepository.findByEgn("881010119876");
+//		if(customer == null) {
+//			throw new CustomerNotFoundException(Messages.NO_SUCH_CUSTOMER);
+//		}
+//		
+//		reservation.setCustomer(customer);
+//		String category = "Delux";
+//		OccupancyType occupancyType = OccupancyType.DOUBLE;
+//		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyType(category, occupancyType);
+//		if(freeRooms.size() == 0) {
+//			throw new NoFreeRoomsByCategoryException(Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY);
+//		}
+//		
+//		Room room = freeRooms.get(0);
+//		room.setRoomOccupiedStatus(RoomOccupiedStatus.OCCUPIED);		
+//		reservation.setRoom(room);
+//		reservation.setChargedAmount(1);
+//				
+//		this.reservationRepository.saveAndFlush(reservation);
+//	}
 }

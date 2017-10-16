@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hotelReservationWebApp.utils.*;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = Messages.NO_SUCH_CUSTOMER)
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Messages.NO_SUCH_CUSTOMER)
 public class CustomerNotFoundException extends RuntimeException{
 	
 	public CustomerNotFoundException() {

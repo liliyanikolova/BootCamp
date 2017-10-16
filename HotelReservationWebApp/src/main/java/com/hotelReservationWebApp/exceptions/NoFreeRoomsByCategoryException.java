@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hotelReservationWebApp.utils.Messages;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY)
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY)
 public class NoFreeRoomsByCategoryException extends RuntimeException{
 
 	public NoFreeRoomsByCategoryException() {
