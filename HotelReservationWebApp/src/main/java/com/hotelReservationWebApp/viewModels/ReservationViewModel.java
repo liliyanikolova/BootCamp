@@ -3,26 +3,27 @@ package com.hotelReservationWebApp.viewModels;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-public class MakeReservationViewModel implements Serializable{
-
-	@NotEmpty(message = "Enter start date")
-	private LocalDate startDate;
+public class ReservationViewModel implements Serializable{
 	
-	@NotEmpty(message = "Enter end date")
+	private LocalDate startDate;
+
 	private LocalDate endDate;
 
-	@NotEmpty(message = "Enter room category")
 	private String roomCategory;
 	
-	@NotEmpty(message = "Enter room occupancy type")
 	private String roomOccupancyType;
+	
+	private String roomNumber;
+	
+	private Double chargedAmount;
 
-	@NotEmpty(message = "Enter customer EGN")
+	private String customerFirstName;
+	
+	private String customerLastName;
+	
 	private String customerEgn;
 
-	public MakeReservationViewModel() {
+	public ReservationViewModel() {
 	}
 
 	public LocalDate getStartDate() {
@@ -41,14 +42,6 @@ public class MakeReservationViewModel implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public double getChargedAmount() {
-		return this.chargedAmount;
-	}
-
-	public void setChargedAmount(double chargedAmount) {
-		this.chargedAmount = chargedAmount;
-	}
-
 	public String getRoomCategory() {
 		return this.roomCategory;
 	}
@@ -65,6 +58,38 @@ public class MakeReservationViewModel implements Serializable{
 		this.roomOccupancyType = roomOccupancyType;
 	}
 
+	public String getRoomNumber() {
+		return this.roomNumber;
+	}
+
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	public Double getChargedAmount() {
+		return this.chargedAmount;
+	}
+
+	public void setChargedAmount(Double chargedAmount) {
+		this.chargedAmount = chargedAmount;
+	}
+
+	public String getCustomerFirstName() {
+		return this.customerFirstName;
+	}
+
+	public void setCustomerFirstName(String customerFirstName) {
+		this.customerFirstName = customerFirstName;
+	}
+
+	public String getCustomerLastName() {
+		return this.customerLastName;
+	}
+
+	public void setCustomerLastName(String customerLastName) {
+		this.customerLastName = customerLastName;
+	}
+
 	public String getCustomerEgn() {
 		return this.customerEgn;
 	}
@@ -72,4 +97,5 @@ public class MakeReservationViewModel implements Serializable{
 	public void setCustomerEgn(String customerEgn) {
 		this.customerEgn = customerEgn;
 	}
+
 }
