@@ -1,5 +1,8 @@
 package com.hotelReservationWebApp.serviceImpls;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,4 +37,18 @@ public class CustomerServiceImpl implements CustomerService {
 		this.customerRepository.saveAndFlush(customer);
 	}
 
-}
+	@Override
+	public List<CustomerViewModel> getAllCustomers() {
+		List<CustomerViewModel> customerViewModels = new ArrayList();
+		List<Customer> customers = this.customerRepository.findAll();
+		for (Customer customer : customers) {
+			CustomerViewModel customerViewModel = new CustomerViewModel();
+			customerViewModel.setFirstName(customer.getFirstName());
+			customerViewModel.setLastName(customer.getLastName());
+			customerViewModel.setEgn(customer.getEgn());
+			customerViewModels.add(customerViewModel);
+		}
+		
+		return customerViewModels;
+	}
+	}

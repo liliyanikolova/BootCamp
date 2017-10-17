@@ -17,11 +17,7 @@ public class ReservationViewModel implements Serializable{
 	
 	private Double chargedAmount;
 
-	private String customerFirstName;
-	
-	private String customerLastName;
-	
-	private String customerEgn;
+	private CustomerViewModel customerViewModel;
 
 	public ReservationViewModel() {
 	}
@@ -74,28 +70,11 @@ public class ReservationViewModel implements Serializable{
 		this.chargedAmount = chargedAmount;
 	}
 
-	public String getCustomerFirstName() {
-		return this.customerFirstName;
+	public CustomerViewModel getCustomerViewModel() {
+		return customerViewModel;
 	}
 
-	public void setCustomerFirstName(String customerFirstName) {
-		this.customerFirstName = customerFirstName;
+	public void setCustomerViewModel(CustomerViewModel customerViewModel) {
+		this.customerViewModel = customerViewModel;
 	}
-
-	public String getCustomerLastName() {
-		return this.customerLastName;
-	}
-
-	public void setCustomerLastName(String customerLastName) {
-		this.customerLastName = customerLastName;
-	}
-
-	public String getCustomerEgn() {
-		return this.customerEgn;
-	}
-
-	public void setCustomerEgn(String customerEgn) {
-		this.customerEgn = customerEgn;
-	}
-
 }

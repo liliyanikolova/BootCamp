@@ -7,7 +7,7 @@ import com.hotelReservationWebApp.viewModels.ReservationViewModel;
 
 public interface ReservationService {
 	
-	void makeReservation(MakeReservationViewModel makeReservationViewModel);
+	ReservationViewModel makeReservation(MakeReservationViewModel makeReservationViewModel);
 	
 	List<ReservationViewModel> getAllReservations();
 }

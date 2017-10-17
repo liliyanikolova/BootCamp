@@ -19,6 +19,7 @@ import com.hotelReservationWebApp.repositories.ReservationRepository;
 import com.hotelReservationWebApp.repositories.RoomRepository;
 import com.hotelReservationWebApp.services.ReservationService;
 import com.hotelReservationWebApp.utils.*;
+import com.hotelReservationWebApp.viewModels.CustomerViewModel;
 import com.hotelReservationWebApp.viewModels.MakeReservationViewModel;
 import com.hotelReservationWebApp.viewModels.ReservationViewModel;
 
@@ -41,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService{
 	}
 
 	@Override
-	public void makeReservation(MakeReservationViewModel makeReservationViewModel) {
+	public ReservationViewModel makeReservation(MakeReservationViewModel makeReservationViewModel) {
 		Reservation reservation = new Reservation();
 		reservation.setStartDate(LocalDate.parse(makeReservationViewModel.getStartDate()));
 		reservation.setEndDate(LocalDate.parse(makeReservationViewModel.getEndDate()));
@@ -63,7 +64,11 @@ public class ReservationServiceImpl implements ReservationService{
 		reservation.setRoom(room);
 		reservation.setChargedAmount();
 				
-		this.reservationRepository.saveAndFlush(reservation);
+		reservation = this.reservationRepository.saveAndFlush(reservation);
+		
+		ReservationViewModel reservationViewModel = this.mapReservationToReservationViewModel(reservation);
+		
+		return reservationViewModel;
 	}
 
 	@Override
@@ -71,16 +76,7 @@ public class ReservationServiceImpl implements ReservationService{
 		List<ReservationViewModel> reservationViewModels = new ArrayList<>();
 		List<Reservation> reservations = this.reservationRepository.findAll();
 		for (Reservation reservation : reservations) {
-			ReservationViewModel reservationViewModel = new ReservationViewModel();
-			reservationViewModel.setStartDate(reservation.getStartDate());
-			reservationViewModel.setEndDate(reservation.getEndDate());
-			reservationViewModel.setCustomerFirstName(reservation.getCustomer().getFirstName());
-			reservationViewModel.setCustomerLastName(reservation.getCustomer().getLastName());
-			reservationViewModel.setCustomerEgn(reservation.getCustomer().getEgn());
-			reservationViewModel.setRoomCategory(reservation.getRoom().getCategory());
-			reservationViewModel.setRoomOccupancyType(reservation.getRoom().getOccupancyType().toString());
-			reservationViewModel.setRoomNumber(reservation.getRoom().getRoomNumber());
-			reservationViewModel.setChargedAmount(reservation.getChargedAmount());
+			ReservationViewModel reservationViewModel = this.mapReservationToReservationViewModel(reservation);
 			
 			reservationViewModels.add(reservationViewModel);
 		}
@@ -88,30 +84,21 @@ public class ReservationServiceImpl implements ReservationService{
 		return reservationViewModels;
 	}
 	
-	
-//	@Override
-//	public void makeReservation(MakeReservationViewModel makeReservationViewModel) {
-//		Reservation reservation = new Reservation();
-//		reservation.setStartDate(LocalDate.parse("2017-09-22"));
-//		reservation.setEndDate(LocalDate.parse("2017-09-25"));
-//		Customer customer = this.customerRepository.findByEgn("881010119876");
-//		if(customer == null) {
-//			throw new CustomerNotFoundException(Messages.NO_SUCH_CUSTOMER);
-//		}
-//		
-//		reservation.setCustomer(customer);
-//		String category = "Delux";
-//		OccupancyType occupancyType = OccupancyType.DOUBLE;
-//		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyType(category, occupancyType);
-//		if(freeRooms.size() == 0) {
-//			throw new NoFreeRoomsByCategoryException(Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY);
-//		}
-//		
-//		Room room = freeRooms.get(0);
-//		room.setRoomOccupiedStatus(RoomOccupiedStatus.OCCUPIED);		
-//		reservation.setRoom(room);
-//		reservation.setChargedAmount(1);
-//				
-//		this.reservationRepository.saveAndFlush(reservation);
-//	}
+	private ReservationViewModel mapReservationToReservationViewModel(Reservation reservation) {
+		ReservationViewModel reservationViewModel = new ReservationViewModel();
+		reservationViewModel.setStartDate(reservation.getStartDate());
+		reservationViewModel.setEndDate(reservation.getEndDate());
+		CustomerViewModel customerViewModel = new CustomerViewModel();
+		customerViewModel.setEgn(reservation.getCustomer().getEgn());
+		customerViewModel.setFirstName(reservation.getCustomer().getFirstName());
+		customerViewModel.setLastName(reservation.getCustomer().getLastName());
+		reservationViewModel.setCustomerViewModel(customerViewModel);
+		reservationViewModel.setRoomCategory(reservation.getRoom().getCategory());
+		reservationViewModel.setRoomOccupancyType(reservation.getRoom().getOccupancyType().toString());
+		reservationViewModel.setRoomNumber(reservation.getRoom().getRoomNumber());
+		reservationViewModel.setChargedAmount(reservation.getChargedAmount());
+		
+		return reservationViewModel;
+	}
+
 }

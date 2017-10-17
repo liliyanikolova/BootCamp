@@ -1,5 +1,7 @@
 package com.hotelReservationWebApp.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,4 +36,10 @@ public class CustomerController {
     public ResponseEntity catchNoFreeRoomsByCategoryException(ExistingCustomerEgnException ecee) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ecee.getMessage());
     }
+	
+	@RequestMapping(method = RequestMethod.GET, value = "")
+	public ResponseEntity<List<CustomerViewModel>> getAllCustomers() {		
+		return new ResponseEntity<>(this.customerService.getAllCustomers(), HttpStatus.OK);
+	}
+	
 }

@@ -2,22 +2,23 @@ package com.hotelReservationWebApp.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hotelReservationWebApp.exceptions.CustomerNotFoundException;
 import com.hotelReservationWebApp.exceptions.NoFreeRoomsByCategoryException;
 import com.hotelReservationWebApp.services.ReservationService;
 import com.hotelReservationWebApp.viewModels.MakeReservationViewModel;
 import com.hotelReservationWebApp.viewModels.ReservationViewModel;
-import com.hotelReservationWebApp.viewModels.RoomsByCategoryViewModel;
 
 @Controller
 @RequestMapping("/reservations")
@@ -31,9 +32,14 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "")
-	public ResponseEntity<MakeReservationViewModel> makeReservation(@RequestBody MakeReservationViewModel makeReservationViewModel) {
-		this.reservationService.makeReservation(makeReservationViewModel);
-		return new ResponseEntity<>(makeReservationViewModel, HttpStatus.OK);
+	public ResponseEntity<ReservationViewModel> makeReservation(@RequestBody @Valid MakeReservationViewModel makeReservationViewModel, BindingResult bindingResult) {
+//		if(bindingResult.hasErrors()) {
+//			
+//		}
+		
+		ReservationViewModel reservationViewModel = this.reservationService.makeReservation(makeReservationViewModel);
+		
+		return new ResponseEntity<>(reservationViewModel, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")

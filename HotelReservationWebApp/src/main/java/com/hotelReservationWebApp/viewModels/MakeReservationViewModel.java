@@ -1,7 +1,6 @@
 package com.hotelReservationWebApp.viewModels;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
