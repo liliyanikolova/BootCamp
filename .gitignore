@@ -1,2 +1,14 @@
 
 Notes/
+
+HotelReservationWebApp/bin/
+HotelReservationWebApp/.gradle/
+HotelReservationWebApp/.idea/
+HotelReservationWebApp/out/
+
+
+ AbstractDataTypesAndAlgorythms/bin/
+        HotelReservationSystem/bin/
+        HotelReservationWebApp/.classpath
+
+

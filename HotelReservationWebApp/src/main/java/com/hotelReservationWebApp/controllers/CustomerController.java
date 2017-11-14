@@ -2,6 +2,7 @@ package com.hotelReservationWebApp.controllers;
 
 import java.util.List;
 
+import com.jcabi.aspects.Loggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,7 @@ public class CustomerController {
     }
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")
+	@Loggable
 	public ResponseEntity<List<CustomerViewModel>> getAllCustomers() {		
 		return new ResponseEntity<>(this.customerService.getAllCustomers(), HttpStatus.OK);
 	}

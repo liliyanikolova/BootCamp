@@ -11,14 +11,13 @@ import com.hotelReservationWebApp.entities.Customer;
 import com.hotelReservationWebApp.entities.Reservation;
 import com.hotelReservationWebApp.entities.rooms.Room;
 import com.hotelReservationWebApp.enums.OccupancyType;
-import com.hotelReservationWebApp.enums.RoomOccupiedStatus;
 import com.hotelReservationWebApp.exceptions.CustomerNotFoundException;
 import com.hotelReservationWebApp.exceptions.NoFreeRoomsByCategoryException;
 import com.hotelReservationWebApp.repositories.CustomerRepository;
 import com.hotelReservationWebApp.repositories.ReservationRepository;
 import com.hotelReservationWebApp.repositories.RoomRepository;
 import com.hotelReservationWebApp.services.ReservationService;
-import com.hotelReservationWebApp.utils.*;
+import com.hotelReservationWebApp.utils.Messages;
 import com.hotelReservationWebApp.viewModels.CustomerViewModel;
 import com.hotelReservationWebApp.viewModels.MakeReservationViewModel;
 import com.hotelReservationWebApp.viewModels.ReservationViewModel;
@@ -44,8 +43,10 @@ public class ReservationServiceImpl implements ReservationService{
 	@Override
 	public ReservationViewModel makeReservation(MakeReservationViewModel makeReservationViewModel) {
 		Reservation reservation = new Reservation();
-		reservation.setStartDate(LocalDate.parse(makeReservationViewModel.getStartDate()));
-		reservation.setEndDate(LocalDate.parse(makeReservationViewModel.getEndDate()));
+		LocalDate startDate = LocalDate.parse(makeReservationViewModel.getStartDate());
+		LocalDate endDate = LocalDate.parse(makeReservationViewModel.getEndDate());
+		reservation.setStartDate(startDate);
+		reservation.setEndDate(endDate);
 		Customer customer = this.customerRepository.findByEgn(makeReservationViewModel.getCustomerEgn());
 		if(customer == null) {
 			throw new CustomerNotFoundException(Messages.NO_SUCH_CUSTOMER);
@@ -54,13 +55,13 @@ public class ReservationServiceImpl implements ReservationService{
 		reservation.setCustomer(customer);
 		String category = makeReservationViewModel.getRoomCategory();
 		OccupancyType occupancyType = OccupancyType.valueOf(makeReservationViewModel.getRoomOccupancyType());		
-		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyType(category, occupancyType);
+//		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyType(category, occupancyType);
+		List<Room> freeRooms = this.roomRepository.getAllFreeRoomsByCategoryAndOccupancyTypeInPeriod(category, occupancyType, LocalDate.parse("2017-11-11"), LocalDate.parse("2017-11-14"));
 		if(freeRooms.size() == 0) {
 			throw new NoFreeRoomsByCategoryException(Messages.NO_FREE_ROOMS_BY_SELECTED_CATEGORY);
 		}
 		
 		Room room = freeRooms.get(0);
-		room.setRoomOccupiedStatus(RoomOccupiedStatus.OCCUPIED);
 		reservation.setRoom(room);
 		reservation.setChargedAmount();
 				
@@ -74,7 +75,8 @@ public class ReservationServiceImpl implements ReservationService{
 	@Override
 	public List<ReservationViewModel> getAllReservations() {
 		List<ReservationViewModel> reservationViewModels = new ArrayList<>();
-		List<Reservation> reservations = this.reservationRepository.findAll();
+//		List<Reservation> reservations = this.reservationRepository.findAll();
+		List<Reservation> reservations = this.reservationRepository.findAllAfterStartDate(LocalDate.parse("2017-11-11"), LocalDate.parse("2017-11-14"));
 		for (Reservation reservation : reservations) {
 			ReservationViewModel reservationViewModel = this.mapReservationToReservationViewModel(reservation);
 			

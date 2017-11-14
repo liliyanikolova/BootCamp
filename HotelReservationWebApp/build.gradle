@@ -4,15 +4,23 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//		classpath ("com.github.sedovalx.gradle:gradle-aspectj-binary:1.0.25")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+//apply plugin: ' com.jcabi:parent'
+//apply plugin: 'jcabi-maven-plugin'
+//apply plugin: 'com.github.sedovalx.gradle-aspectj-binary'
+
+weaveClasses.dependsOn compileJava
+classes.dependsOn weaveClasses
 
 group = 'com.hotelReservationWebApp'
 version = '1.0'
@@ -20,12 +28,26 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repository.apache.org/snapshots' }
+//	maven {
+//		url  "http://dl.bintray.com/dmahapatro/plugins"
+//	}
+
+//	maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('io.springfox:springfox-swagger2:2.7.0')
+	compile('io.springfox:springfox-swagger-ui:2.7.0')
+//	compile('org.grails.plugins:actuator-ui:1.1')
+	compile(group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.9.1')
+	compile(group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1')
+	compile(group: 'com.jcabi', name: 'jcabi-aspects', version: '0.22.6')
+	compile(group: 'org.aspectj', name: 'aspectjrt',version: '1.8.3')
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

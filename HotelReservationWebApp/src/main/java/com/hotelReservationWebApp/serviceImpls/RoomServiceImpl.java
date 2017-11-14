@@ -30,7 +30,6 @@ public class RoomServiceImpl implements RoomService{
 			roomsByCategoryViewModel.setRoomNumber(room.getRoomNumber());
 			roomsByCategoryViewModel.setRate(room.getRate());
 			roomsByCategoryViewModel.setOccupancyType(room.getOccupancyType().getName());
-			roomsByCategoryViewModel.setOccupiedStatus(room.getRoomOccupiedStatus().getName());
 			roomsByCategoryViewModel.setCategory(room.getCategory());
 			roomsByCategoryViewModels.add(roomsByCategoryViewModel);
 		}

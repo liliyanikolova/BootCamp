@@ -1,9 +1,23 @@
 package com.hotelReservationWebApp.entities.rooms;
 
-import javax.persistence.*;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.hotelReservationWebApp.entities.Reservation;
 import com.hotelReservationWebApp.enums.OccupancyType;
-import com.hotelReservationWebApp.enums.RoomOccupiedStatus;
 
 @Entity
 @Table(name = "rooms")
@@ -27,10 +41,10 @@ public abstract class Room {
 	@Enumerated(EnumType.STRING)
 	private OccupancyType occupancyType;
 	
-	@Enumerated(EnumType.STRING)
-	private RoomOccupiedStatus roomOccupiedStatus;
+	@OneToMany(mappedBy = "room")
+	private List<Reservation> reservations;
 
-	protected Room() {
+	protected Room() { 
 	}
 
 	public Long getId() {
@@ -71,14 +85,6 @@ public abstract class Room {
 
 	public void setOccupancyType(OccupancyType occupancyType) {
 		this.occupancyType = occupancyType;
-	}
-
-	public RoomOccupiedStatus getRoomOccupiedStatus() {
-		return roomOccupiedStatus;
-	}
-
-	public void setRoomOccupiedStatus(RoomOccupiedStatus roomOccupiedStatus) {
-		this.roomOccupiedStatus = roomOccupiedStatus;
 	}
 
 }

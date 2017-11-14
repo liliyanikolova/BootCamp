@@ -3,6 +3,7 @@ package com.hotelReservationWebApp.serviceImpls;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jcabi.aspects.Loggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.hotelReservationWebApp.utils.Messages;
 import com.hotelReservationWebApp.viewModels.CustomerViewModel;
 
 @Service
+@Loggable
 public class CustomerServiceImpl implements CustomerService {
 	
 	private CustomerRepository customerRepository;
@@ -38,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Loggable
 	public List<CustomerViewModel> getAllCustomers() {
 		List<CustomerViewModel> customerViewModels = new ArrayList();
 		List<Customer> customers = this.customerRepository.findAll();
